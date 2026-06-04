@@ -37,12 +37,35 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles'
-    'rest_framework',
+    'django.contrib.staticfiles',
+    'rest_framework_simplejwt',
+    'drf_spectacular',
     
     #apps do projeto
     'users',
+    'diet',
+    'workouts',
+    'core',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (          # ← estava PERMISSION
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (              # ← adiciona este também
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5,
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'FitTrack API',
+    'DESCRIPTION': 'API para acompanhamento de treinos e dietas',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
