@@ -11,7 +11,7 @@ API REST para acompanhamento de treinos e dietas com planos personalizados.
 - Swagger / drf-spectacular para documentação
 - Docker + Docker Compose
 - Makefile para automação de tarefas
-- Cache configurado nas listagens
+
 
 ---
 
@@ -75,8 +75,7 @@ docker compose exec web python manage.py createsuperuser
 | `make makemigrations` | Gera novas migrations |
 | `make createsuperuser` | Cria superusuário |
 | `make shell` | Abre o shell do Django |
-| `make logs` | Exibe logs dos containers |
-| `make test` | Roda os testes |
+
 
 ---
 
@@ -175,12 +174,6 @@ Com o projeto rodando, acesse:
 
 ---
 
-## Cache
-
-As rotas de listagem utilizam cache para melhorar a performance. O cache é invalidado automaticamente em operações de escrita (POST, PUT, PATCH, DELETE).
-
----
-
 ## Testes com Postman
 
 Importe a collection disponível em `/docs/fittrack.postman_collection.json` para testar todos os endpoints com exemplos de requisição já configurados.
@@ -213,6 +206,3 @@ fittrack/
 
 ---
 
-## Licença
-
-MIT
