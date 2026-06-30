@@ -189,10 +189,10 @@ Fluxo básico de teste:
 
 ```
 fittrack/
-├── apps/
-│   ├── users/
-│   ├── workouts/
-│   └── diets/
+|
+├── users/
+├── workouts/
+├── diets/
 ├── config/
 │   ├── settings.py
 │   ├── urls.py
