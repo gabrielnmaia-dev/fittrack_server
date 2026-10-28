@@ -3,49 +3,51 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-
     container_name: fittrack_api
-
+    # Keeps files created inside the container owned by the host user.
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+    # Development server (the image default runs gunicorn for production).
     command: python manage.py runserver 0.0.0.0:8000
-
     volumes:
       - .:/app
-
     ports:
       - "8000:8000"
-
     env_file:
       - .env
-
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8000/health/')",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
 
   db:
     image: postgres:17
-
     container_name: fittrack_db
-
     environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME:-fittrack}
+      POSTGRES_USER: ${DB_USER:-fittrack}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-fittrack}
       TZ: UTC
       PGTZ: UTC
-
     ports:
       - "5433:5432"
-
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
-  redis:
-    image: redis:7-alpine
-
-    container_name: fittrack_redis
-
-    ports:
-      - "6379:6379"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-fittrack} -d ${DB_NAME:-fittrack}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
 volumes:
   postgres_data:

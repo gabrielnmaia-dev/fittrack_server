@@ -1,9 +1,13 @@
 .env
 venv/
+.venv/
 __pycache__/
 *.pyc
+*.pyo
 db.sqlite3
-.env
 .vscode/
 .idea/
 postgres_data/
+staticfiles/
+schema.yml
+.pytest_cache/
